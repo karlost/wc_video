@@ -31,33 +31,13 @@
         // document.getElementsByClassName("woocommerce-product-gallery__image--placeholder")[0].style.visibility="hidden";
         // document.getElementsByClassName("woocommerce-product-gallery__image--placeholder")[0].style.position="absolute";
         // </script>';
-        $items = WC()->cart->get_cart();
-        if( $items ){
-            foreach($items as $item => $values) {
-                $product = wc_get_product( $values['product_id'] );
-                if( $product->get_type() == 'restricted_video' ){
-                   
-                 echo 'true';
-                }
-               $neco =  $product->get_type();
-                echo $values['product_id'];
-                preprint ($neco);
-            }
-        }
-       
-
-        $test = $have->check_cart_before_checkout_for_registration();
-        if ($test > 0 ){
-            echo 'true';
-        }else {
-            echo 'false';
-        }
+ 
         if($have->has_bought_items('0',$product_id) == false ){
 
-            echo  '<iframe  src="'.$demo.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+            echo  '<iframe  src="'.youtube_url($demo).'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
        
         } else {
-            echo  '<iframe  src="'.$video.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+            echo  '<iframe  src="'.youtube_url($video).'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
         
         }
        
@@ -65,6 +45,16 @@
     } 
         
         
-};     
+};   
+
     add_action( 'woocommerce_product_thumbnails', 'video_src', 100 );
+
+    function youtube_url($url){
+        if($url){
+        $url_components = parse_url($url);
+        $url = substr($url_components['query'],2);
+        return 'https://www.youtube.com/embed/'.$url;
+        }
+   
+    }
 ?>

@@ -278,11 +278,18 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
             global $product;
             if ( 'restricted_video' == $product->get_type() ) {
                 do_action( 'video_product_before_add_to_cart_form' );
-            ?>
-            <form class="video_product_cart" method="post" enctype='multipart/form-data'>
-                <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
-            </form>
-            <?php
+                $product_id = get_the_ID();
+                    if($this->has_bought_items('0',$product_id) == false ){
+                ?>
+                <form class="video_product_cart" method="post" enctype='multipart/form-data'>
+                    <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
+                </form>
+                <?php
+                   
+                }else {
+                    wc_add_notice( __( 'Tento Produkt vlasníte', 'woocommerce' ), 'notice' );
+                  
+                }
                 do_action( 'video_product_after_add_to_cart_form' );
             }
         }
@@ -536,9 +543,9 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
          */
         function confirm_password_validation( $posted ) {
             $checkcart = $this->check_cart_before_checkout_for_registration();
-            if ($checkcart > 0 && !is_user_logged_in()){
+            if ($checkcart > 0 ){
                 if ( ! is_user_logged_in()) {
-                    if (!$_POST['account_password'] != $_POST['account_password_2'] ) {
+                    if ($_POST['account_password'] != $_POST['account_password_2'] ) {
                         wc_add_notice( __( 'Hesla se neshodují', 'woocommerce' ), 'error' );
                     }
                 }
@@ -556,7 +563,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
         
         function checkout_field_password() {
             // Check if set, if its not set add an error.
-            if ( ! $_POST['account_password'] )
+            if ( ! $_POST['account_password'] && ! is_user_logged_in() )
                 wc_add_notice( __( 'Můsíte vyplnit heslo' ), 'error' );
         }       
             
