@@ -38,11 +38,11 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
             add_action( 'woocommerce_checkout_update_order_meta', [$this,'wc_register_guests'], 10, 2 );
             add_action( 'woocommerce_before_checkout_form', [$this,'mess_if_in_cart'], 30, 2 );
 
-            add_action( 'woocommerce_after_order_notes', [$this,'sn_woocommerce_confirm_password_checkout'], 10, 1 );
-            add_action( 'woocommerce_checkout_update_order_meta', [$this,'sn_woocommerce_save_password_confirm'] );
+            add_action( 'woocommerce_after_order_notes', [$this,'confirm_password_checkout'], 10, 1 );
+            add_action( 'woocommerce_checkout_update_order_meta', [$this,'save_password_confirm'] );
 
-            add_action( 'woocommerce_after_checkout_validation', [$this,'sn_woocommerce_confirm_password_validation'], 10, 2 );
-            add_action('woocommerce_checkout_process', [$this,'my_custom_checkout_field_process']);
+            add_action( 'woocommerce_after_checkout_validation', [$this,'confirm_password_validation'], 10, 2 );
+            add_action('woocommerce_checkout_process', [$this,'checkout_field_password']);
 
 
         }
@@ -470,7 +470,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
          */
 
 
-        function sn_woocommerce_confirm_password_checkout( $checkout ) {
+        function confirm_password_checkout( $checkout ) {
             $checkcart = $this->check_cart_before_checkout_for_registration();
             if ( get_option( 'woocommerce_registration_generate_password' ) == 'no' ) {
                     
@@ -517,7 +517,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
          * 
          */
 
-        function sn_woocommerce_save_password_confirm( $order_id ) {
+        function save_password_confirm( $order_id ) {
             if ( ! empty( $_POST['account_password']) && ! empty( $_POST['account_password_2'])) {
                     update_post_meta( $order_id, 'account_password', sanitize_text_field( $_POST['account_password'] ) );
                     update_post_meta( $order_id, 'account_password_2', sanitize_text_field( $_POST['account_password_2'] ) );
@@ -534,7 +534,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
          *
          * 
          */
-        function sn_woocommerce_confirm_password_validation( $posted ) {
+        function confirm_password_validation( $posted ) {
             $checkcart = $this->check_cart_before_checkout_for_registration();
             if ($checkcart > 0 && !is_user_logged_in()){
                 if ( ! is_user_logged_in()) {
@@ -554,7 +554,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
 
             
         
-        function my_custom_checkout_field_process() {
+        function checkout_field_password() {
             // Check if set, if its not set add an error.
             if ( ! $_POST['account_password'] )
                 wc_add_notice( __( 'Můsíte vyplnit heslo' ), 'error' );
