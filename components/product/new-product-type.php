@@ -7,7 +7,8 @@
  */ 
 
  // vyresit video_product_template dvoji zobrazení 
- 
+ // vyresit mess_if_in_cart když se zobrazi označi to všechny req pole červeně
+
 if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
@@ -31,7 +32,6 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
             add_filter( 'woocommerce_checkout_fields' ,[$this, 'override_checkout_fields'] );
             // povolit prodej
             add_filter( 'woocommerce_is_purchasable', [$this, 'return_true_woocommerce_is_purchasable'], 10, 2 );
-
             // přidání tlačítka add to cart na single product
             add_action( 'woocommerce_single_product_summary', [$this, 'video_product_template'], 60 );
         
@@ -47,11 +47,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
 
         }
      
-     
-       
 
-   
-  
         public function test(){
            // die('jo');
         }
@@ -79,13 +75,10 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
         public function woocommerce_product_class( $classname, $product_type ) {
             if ( $product_type == 'restricted_video' ) {
                 $classname = 'WC_Restricted_Video';
-              
-
             }
             return $classname;
         }
 
-      
          /**
          * Registering video product type in product post woocommerce
          */
@@ -123,8 +116,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
          *
          * 
          */
-        
-       
+              
         function video_settings_tab_content() {
             
             ?>
@@ -270,7 +262,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
          *  definice cesty k šabloně
          * 
          *
-         * 
+         * zobrazuje se dvakrat
          */
         
         function video_product_template () {
@@ -415,7 +407,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
          * 
          *  zprava pokud naštevnik neni prihlašený 
          * 
-         *
+         * kdyz se zobrazi vše je cervene (fields)
          * 
          */
 
@@ -526,12 +518,12 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
 
         function save_password_confirm( $order_id ) {
             if ( ! empty( $_POST['account_password']) && ! empty( $_POST['account_password_2'])) {
-                    update_post_meta( $order_id, 'account_password', sanitize_text_field( $_POST['account_password'] ) );
-                    update_post_meta( $order_id, 'account_password_2', sanitize_text_field( $_POST['account_password_2'] ) );
-                    if (! empty( $_POST['account_username'])){
-                    update_post_meta( $order_id, 'account_username', sanitize_text_field( $_POST['account_username'] ) );
-                        }
+                update_post_meta( $order_id, 'account_password', sanitize_text_field( $_POST['account_password'] ) );
+                update_post_meta( $order_id, 'account_password_2', sanitize_text_field( $_POST['account_password_2'] ) );
+                if (! empty( $_POST['account_username'])){
+                update_post_meta( $order_id, 'account_username', sanitize_text_field( $_POST['account_username'] ) );
                 }
+            }
         }
 
             /**
