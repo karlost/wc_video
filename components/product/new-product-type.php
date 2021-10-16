@@ -6,8 +6,8 @@
  * @author Wedesin
  */ 
 
- // vyřešit v pluginu cesty k ostatním souborům
- // vře´yřešit propisování ceny
+ // vyresit video_product_template dvoji zobrazení 
+ 
 if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
@@ -487,9 +487,9 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
                             'account_username',
                                 array(
                                     'type'              => 'text',
-                                    'label'             => __( 'username', 'woocommerce' ),
+                                    'label'             => __( 'username', 'wcpt' ),
                                     'required'          => false,
-                                    'placeholder'       => _x( 'Pokud zustane prázdné, použije se e-mailová adresa.', 'placeholder', 'woocommerce' )
+                                    'placeholder'       => _x( 'Pokud zustane prázdné, použije se e-mailová adresa.', 'placeholder', 'wcpt' )
                                 ),
                                 $checkout->get_value( 'account_username' )
                                 );
@@ -497,9 +497,9 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
                         'account_password',
                             array(
                                 'type'              => 'password',
-                                'label'             => __( 'Password', 'woocommerce' ),
+                                'label'             => __( 'Password', 'wcpt' ),
                                 'required'          => true,
-                                'placeholder'       => _x( 'Password', 'placeholder', 'woocommerce' )
+                                'placeholder'       => _x( 'Password', 'placeholder', 'wcpt' )
                             ),
                             $checkout->get_value( 'account_password' )
                             );
@@ -507,9 +507,9 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
                     'account_password_2',
                         array(
                             'type'              => 'password',
-                            'label'             => __( 'Password confirmation', 'woocommerce' ),
+                            'label'             => __( 'Password confirmation', 'wcpt' ),
                             'required'          => true,
-                            'placeholder'       => _x( 'Password repeat', 'placeholder', 'woocommerce' )
+                            'placeholder'       => _x( 'Password repeat', 'placeholder', 'wcpt' )
                         ),
                         $checkout->get_value( 'account_password_2' )
                         );
@@ -546,7 +546,7 @@ if( ! class_exists( 'videoRestrictedProduct' ) && in_array( 'woocommerce/woocomm
             if ($checkcart > 0 ){
                 if ( ! is_user_logged_in()) {
                     if ($_POST['account_password'] != $_POST['account_password_2'] ) {
-                        wc_add_notice( __( 'Hesla se neshodují', 'woocommerce' ), 'error' );
+                        wc_add_notice( __( 'Hesla se neshodují', 'wcpt' ), 'error' );
                     }
                 }
             }
